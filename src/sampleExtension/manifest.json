@@ -1,8 +1,16 @@
 {
-  "id": "sampleExtension",
+  "id": "moonlight-css",
   "meta": {
-    "name": "Sample extension",
-    "description": "Sample Moonlight extension",
-    "authors": ["You!"]
+    "name": "CSS",
+    "description": "custom discord css for maximum hotdog theme",
+    "authors": ["husky"]
+  },
+  "settings": {
+    "cssPath": {
+      "displayName": "CSS Folder",
+      "description": "Folder to load CSS files from",
+      "type": "string",
+      "default": ""
+    }
   }
 }
