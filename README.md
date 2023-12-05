@@ -1,8 +1,13 @@
-# moonlight-css
+# moonlight-exts
+my moonlight extensions (:
+
+repo at https://floppydiskette.github.io/moonlight-exts/repo.json
+
+## moonlight-css
 custom discord css for maximum hotdog theme  
 for the [moonlight discord client mod](https://moonlight-mod.github.io)
 
-## setup
+### setup
 after setting up repos,　just add something like the following to your moonlight config,
 replacing <replace me> with a path to a folder full of css files you'd like injected (:
 ```json
