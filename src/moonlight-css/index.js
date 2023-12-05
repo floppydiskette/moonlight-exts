@@ -13,12 +13,12 @@ module.exports.webpackModules = {
       const logger = moonlight.getLogger("moonlight-css");
 
       const natives = moonlight.getNatives("moonlight-css");
-      const config = moonlight.getConfig("moonlight-css");
-      if (!config.hasOwnProperty("cssPath")) {
+      const cssPath = moonlight.getConfigOption("moonlight-css", "cssPath");
+      if (cssPath === undefined) {
         logger.error("cssPath not set");
         return;
       }
-      natives.loadCssFromFiles(config.cssPath).forEach(css => {
+      natives.loadCssFromFiles(cssPath).forEach(css => {
         addGlobalCSS(css);
       });
     }
