@@ -1,5 +1,5 @@
 {
-  "name": "sample-extension",
+  "name": "moonlight-css",
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
