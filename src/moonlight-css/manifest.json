@@ -2,7 +2,7 @@
   "id": "moonlight-css",
   "meta": {
     "name": "CSS",
-    "description": "custom discord css for maximum hotdog theme",
+    "tagline": "custom discord css for maximum hotdog theme",
     "authors": ["husky"]
   },
   "settings": {
