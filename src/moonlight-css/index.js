@@ -1,5 +1,5 @@
 function addGlobalCSS(css) {
-  const head = document.getElementsByTagName("head")[0];
+  const head = document.documentElement;
   let style = document.createElement("style");
   style.classList.add("moonlight-css");
   style.innerHTML = css;
