@@ -1,9 +1,12 @@
 {
   "id": "moonlight-css",
+  "version": "1.1.0",
   "meta": {
     "name": "CSS",
     "tagline": "custom discord css for maximum hotdog theme",
-    "authors": ["husky"]
+    "authors": ["husky"],
+    "source": "https://github.com/floppydiskette/moonlight-exts",
+    "tags": ["appearance"]
   },
   "settings": {
     "cssPath": {
