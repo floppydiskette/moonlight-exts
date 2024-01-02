@@ -11,7 +11,16 @@ module.exports.loadCssFromFiles = (path) => {
   }
 
   fs.readdirSync(path).forEach(file => {
-    const content = fs.readFileSync(`${path}/${file}`, {encoding: "utf8"});
+    let fp = `${path}/${file}`;
+    // don't try to read anything but files
+    if (!fs.lstatSync(fp).isFile() && !fs.lstatSync(fp).isSymbolicLink()) {
+      return;
+    }
+    // don't try to read files that aren't a .css (kinda hacky but oh well)
+    if (!fp.endsWith(".css")) {
+      return;
+    }
+    const content = fs.readFileSync(fp, {encoding: "utf8"});
     csses.push(content);
   })
   return csses;
