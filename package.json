@@ -13,6 +13,7 @@
     "esbuild-copy-static-files": "^0.1.0"
   },
   "dependencies": {
-    "@moonlight-mod/types": "^1.0.0"
+    "@moonlight-mod/types": "^1.0.0",
+    "sass": "^1.70.0"
   }
 }
