@@ -1,6 +1,6 @@
 {
-  "id": "moonlight-css",
-  "version": "1.2.0",
+  "id": "moonlight-css-dev",
+  "version": "1.3.0",
   "meta": {
     "name": "CSS",
     "tagline": "custom discord css for maximum hotdog theme",
@@ -14,6 +14,18 @@
       "description": "Folder to load CSS files from",
       "type": "string",
       "default": ""
+    },
+    "fileSelector": {
+      "displayName": "File Selection Regex",
+      "description": "(Optional) Regex to match specific CSS files",
+      "type": "string",
+      "default": ""
+    },
+    "recurseDirectory": {
+      "displayName": "Recursively Search Folder",
+      "description": "Search for CSS files in subdirectories",
+      "type": "boolean",
+      "default": false
     }
   }
 }
