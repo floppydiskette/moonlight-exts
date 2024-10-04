@@ -13,11 +13,47 @@ function makeConfig(ext, name) {
     if (fs.existsSync(path)) entryPoints.push(path);
   }
 
+  const wpModulesDir = `./src/${ext}/webpackModules`;
+  if (fs.existsSync(wpModulesDir) && name === "index") {
+    const wpModules = fs.readdirSync(wpModulesDir);
+    for (const wpModule of wpModules) {
+      entryPoints.push(`./src/${ext}/webpackModules/${wpModule}`);
+    }
+  }
+
   if (entryPoints.length === 0) return null;
+
+  const wpImportPlugin = {
+    name: "webpackImports",
+    setup(build) {
+      build.onResolve({ filter: /^@moonlight-mod\/wp\// }, (args) => {
+        const wpModule = args.path.replace(/^@moonlight-mod\/wp\//, "");
+        return {
+          path: wpModule,
+          external: true
+        };
+      });
+    }
+  };
+
+  const timeFormatter = new Intl.DateTimeFormat(undefined, {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: false
+  });
+  const buildLogPlugin = {
+    name: "buildLog",
+    setup(build) {
+      build.onEnd(() => {
+        console.log(`[${timeFormatter.format(new Date())}] [${ext}/${name}] build finished`);
+      });
+    }
+  }
 
   return {
     entryPoints,
-    outfile: `./dist/${ext}/${name}.js`,
+    outdir: `./dist/${ext}`,
 
     format: "cjs",
     platform: "node",
@@ -27,11 +63,22 @@ function makeConfig(ext, name) {
     minify: prod,
     sourcemap: "inline",
 
+    external: [
+      "electron",
+      "fs",
+      "path",
+      "module",
+      "events",
+      "original-fs"
+    ],
+
     plugins: [
       copyStaticFiles({
         src: `./src/${ext}/manifest.json`,
         dest: `./dist/${ext}/manifest.json`
-      })
+      }),
+      wpImportPlugin,
+      buildLogPlugin
     ]
   };
 }
@@ -39,7 +86,11 @@ function makeConfig(ext, name) {
 const exts = fs.readdirSync("./src");
 
 const config = exts
-  .map((x) => [makeConfig(x, "index"), makeConfig(x, "node")])
+  .map((x) => [
+    makeConfig(x, "index"),
+    makeConfig(x, "node"),
+    makeConfig(x, "host")
+  ])
   .flat()
   .filter((c) => c !== null);
 
