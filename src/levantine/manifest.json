@@ -1,0 +1,43 @@
+{
+  "apiLevel": 2,
+  "id": "levantine",
+  "version": "1.0.0",
+  "meta": {
+    "name": "Levantine",
+    "tagline": "protect your messages from shoulder surfers by making them illegible",
+    "description": "levantine automatically obfuscates all messages into a format illegible to others (by default, a weird mixture of japanese and english). you can supply a custom mappings file to change this.",
+    "authors": [
+      "husky"
+    ],
+    "source": "https://github.com/floppydiskette/moonlight-exts",
+    "tags": [
+      "chat", "privacy", "fun"
+    ]
+  },
+  "settings": {
+    "removeArticles": {
+      "displayName": "Remove Articles",
+      "description": "Removes articles (words like \"a\", \"an\", and \"the\") from sentences to conform more to Japanese grammar",
+      "type": "boolean",
+      "default": true
+    },
+    "replaceSeparators": {
+      "displayName": "Replace Separators",
+      "description": "Uses the custom mapping (default: \"の\") to replace spaces between words that aren't mapped.",
+      "type": "boolean",
+      "default": true
+    },
+    "replaceNumbers": {
+      "displayName": "Replace Numbers",
+      "description": "Converts numbers to those listed in the mappings (e.g. 1234 -> 一二三四)",
+      "type": "boolean",
+      "default": true
+    },
+    "mappingsPath": {
+      "displayName": "path to mappings.txt",
+      "description": "file to load replacement mappings",
+      "type": "string",
+      "default": ""
+    }
+  }
+}
