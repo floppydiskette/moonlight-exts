@@ -1,6 +1,8 @@
 const cssList = {};
 
 function addGlobalCSS(name, css) {
+  if (cssList[name] != null) return;
+
   const head = document.documentElement;
   let style = document.createElement("style");
   style.classList.add("moonlight-css");
