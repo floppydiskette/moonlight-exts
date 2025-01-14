@@ -135,7 +135,13 @@ const getCssList = (path) => {
   }
 
   // get ALL files in this directory
-  const dir = fs.readdirSync(path, {recursive: recurseDirectory === true});
+  let dir;
+  if (fs.lstatSync(path).isDirectory()) {
+    dir = fs.readdirSync(path, {recursive: recurseDirectory === true});
+  } else {
+    dir = [nodePath.basename(path)];
+    path = path.substring(0, path.length - dir[0].length);
+  }
   const tracked = [];
   
   const filteredList = dir.filter(filename => {
