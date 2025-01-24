@@ -26,6 +26,15 @@ function deleteGlobalCSS(name, css) {
   }
 }
 
+function isURL(str) {
+  try {
+    let url = new URL(str);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch (_) {
+    return false;
+  }
+}
+
 module.exports.webpackModules = {
   entrypoint: {
     entrypoint: true,
@@ -44,44 +53,52 @@ module.exports.webpackModules = {
         return;
       }
 
-      const fwResult = natives.getFileWatcher(cssPath);
-      if (!fwResult) {
-        logger.error("Failed to get file watcher");
-        return;
-      }
-      const {cssList: loadCssList, emitter} = fwResult;
-
-      if (emitter === undefined || loadCssList === undefined) {
-        logger.error("File watcher failed to properly return");
-        return;
-      }
-
-      logger.trace(loadCssList, emitter);
-
-      if (typeof loadCssList === "object" && Object.keys(loadCssList).length > 0) {
-        Object.keys(loadCssList).forEach(filename => {
-          addGlobalCSS(filename, loadCssList[filename]);
+      // check if cssPath is a url
+      if (isURL(cssPath)) {
+        natives.loadCssFromUrl(cssPath).then(css => {
+          addGlobalCSS("url", css);
         });
+      } else {
+
+        const fwResult = natives.getFileWatcher(cssPath);
+        if (!fwResult) {
+          logger.error("Failed to get file watcher");
+          return;
+        }
+        const { cssList: loadCssList, emitter } = fwResult;
+
+        if (emitter === undefined || loadCssList === undefined) {
+          logger.error("File watcher failed to properly return");
+          return;
+        }
+
+        logger.trace(loadCssList, emitter);
+
+        if (typeof loadCssList === "object" && Object.keys(loadCssList).length > 0) {
+          Object.keys(loadCssList).forEach(filename => {
+            addGlobalCSS(filename, loadCssList[filename]);
+          });
+        }
+
+        emitter.subscribe("new", (newCss) => {
+          logger.debug(`New css file ${newCss.filename}`);
+          addGlobalCSS(newCss.filename, newCss.css);
+        });
+
+        emitter.subscribe("change", (newCss) => {
+          logger.debug(`Changed css file ${newCss.filename}`);
+          updateGlobalCSS(newCss.filename, newCss.css);
+        });
+
+        emitter.subscribe("remove", (filename) => {
+          logger.debug(`Removed css file ${filename}`);
+          deleteGlobalCSS(filename);
+        });
+
+        // natives.loadCssFromFiles(cssPath).forEach(css => {
+        //   addGlobalCSS(css);
+        // });
       }
-
-      emitter.subscribe("new", (newCss) => {
-        logger.debug(`New css file ${newCss.filename}`);
-        addGlobalCSS(newCss.filename, newCss.css);
-      });
-
-      emitter.subscribe("change", (newCss) => {
-        logger.debug(`Changed css file ${newCss.filename}`);
-        updateGlobalCSS(newCss.filename, newCss.css);
-      });
-
-      emitter.subscribe("remove", (filename) => {
-        logger.debug(`Removed css file ${filename}`);
-        deleteGlobalCSS(filename);
-      });
-
-      // natives.loadCssFromFiles(cssPath).forEach(css => {
-      //   addGlobalCSS(css);
-      // });
     }
   }
 };

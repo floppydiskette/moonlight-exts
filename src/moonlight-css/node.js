@@ -1,6 +1,7 @@
 const fs = require("fs");
 const nodePath = require("path");
 const sass = require("sass");
+const https = require("https");
 
 
 const fileSelector = moonlightNode.getConfigOption("moonlight-css", "fileSelector");
@@ -200,6 +201,24 @@ const getCssList = (path) => {
   };
 };
 
+const loadCssFromUrl = async (url) => {
+  return await (new Promise((resolve) => {
+    let data = [];
+    return https.get(url, (res) => {
+      res.on("data", (chunk) => {
+        data.push(chunk);
+      });
+      res.on("end", () => {
+        resolve(Buffer.concat(data).toString("utf8"));
+      });
+    }).on("error", (err) => {
+      logger.error(err);
+      resolve("")
+    });
+  }));
+}
+
 module.exports = {
-  getFileWatcher
+  getFileWatcher,
+  loadCssFromUrl
 };
