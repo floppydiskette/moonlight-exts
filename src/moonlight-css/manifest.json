@@ -16,7 +16,7 @@
   "settings": {
     "cssPath": {
       "displayName": "CSS Source",
-      "description": "File / Folder to load CSS from",
+      "description": "File / Folder / URL to load CSS from",
       "type": "string",
       "default": ""
     },
