@@ -58,10 +58,10 @@ const REMOVE_ARTICLES = moonlightNode.getConfigOption("levantine", "removeArticl
 const REPLACE_SEPARATORS = moonlightNode.getConfigOption("levantine", "replaceSeparators");
 const REPLACE_NUMBERS = moonlightNode.getConfigOption("levantine", "replaceNumbers");
 
-let mappingsFile = moonlightNode.getConfigOption("levantine", "mappingsPath");
+let mappingsFile = moonlightNode.getConfigOption("levantine", "mappingsPath").toString();
 let mappingsLines;
 
-if (mappingsFile === undefined) {
+if (!fs.existsSync(mappingsFile)) {
   mappingsLines = DEFAULT_MAPPINGS.split(/\n/);
 } else {
   let file = fs.readFileSync(mappingsFile, "utf-8");
